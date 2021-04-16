@@ -1,12 +1,12 @@
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
+
 dayjs.extend(duration);
 
 const MAX_MONTH_GAP = 3;
 const MAX_DAYS_GAP = 7;
 const MAX_HOURS_GAP = 23;
 const MAX_MINUTES_GAP = 59;
-const HourToMinutes = 60;
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
@@ -51,16 +51,6 @@ const getDateFormat = (date, format = 'YYYY-MM-DD') => {
   return dayjs(date).format(format);
 };
 
-const calculateDuration = (dateFrom, dateTo) => {
-  if (!dateFrom || !dateTo) {
-    return null;
-  }
-
-  const dateIn = dayjs(dateFrom);
-  const dateOut = dayjs(dateTo);
-  return dayjs.duration(dateIn.diff(dateOut, 'minute'));
-};
-
 export const separateTimeDuration = (duration) => {
   const minutes = Math.floor(duration % 60);
   const hours = Math.floor((duration / 60) % 24);
@@ -73,30 +63,26 @@ export const separateTimeDuration = (duration) => {
   };
 };
 
-const addLeadingZero = (value) => {
-  if (value.toString().length > 1) {
-    return value;
-  } else {
-    return `0${value}`;
-  }
-};
-
-const getDurationFormat = (duration) => {
-  if (!duration) {
-    return '';
+const getDurationFormat = (dateFrom, dateTo) => {
+  if (!dateFrom || !dateTo) {
+    return null;
   }
 
-  const {minutes, hours, days} = separateTimeDuration(duration);
+  const duration = dayjs(dateTo).diff(dayjs(dateFrom));
+  const days = dayjs.duration(duration).days();
+  const hours = dayjs.duration(duration).hours();
+  const minutes = dayjs.duration(duration).minutes();
 
-  if (duration < HourToMinutes) {
-    return `${dayjs(duration).format('mm')}M`;
-  } else {
-    if (days > 0) {
-      return `${addLeadingZero(days)}D ${addLeadingZero(hours)}H ${addLeadingZero(minutes)}M`;
-    } else {
-      return `${addLeadingZero(hours)}H ${addLeadingZero(minutes)}M`;
-    }
+  const daysValue = String(minutes).padStart(2, '0');
+  const hoursValue = String(hours).padStart(2, '0');
+  const minutesValue = String(days).padStart(2, '0');
+
+  if (days > 0) {
+    return `${daysValue}D ${hoursValue}H ${minutesValue}M`;
+  } else if (hours > 0) {
+    return `${hoursValue}H ${minutesValue}M`;
   }
+  return `${minutesValue}M`;
 };
 
 export {
@@ -106,6 +92,5 @@ export {
   getDateFrom,
   getDateTo,
   getDateFormat,
-  calculateDuration,
   getDurationFormat
 };

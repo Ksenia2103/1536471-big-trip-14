@@ -1,4 +1,4 @@
-import {calculateDuration, getDateFormat, getDurationFormat} from '../utils.js';
+import {getDateFormat, getDurationFormat} from '../utils.js';
 
 export const createTripPointTemplate = (point = {}) => {
   const {
@@ -32,9 +32,9 @@ export const createTripPointTemplate = (point = {}) => {
                   <p class="event__time">
                     <time class="event__start-time" datetime="${getDateFormat(dateFrom, 'YYYY-MM-DDTHH:mm')}">${getDateFormat(dateFrom, 'HH:mm')}</time>
                     &mdash;
-                    <time class="event__end-time" datetime="${getDateFormat(dateFrom, 'YYYY-MM-DDTHH:mm')}">${getDateFormat(dateFrom, 'HH:mm')}</time>
+                    <time class="event__end-time" datetime="${getDateFormat(dateTo, 'YYYY-MM-DDTHH:mm')}">${getDateFormat(dateTo, 'HH:mm')}</time>
                   </p>
-                  <p class="event__duration">${getDurationFormat(calculateDuration(dateFrom, dateTo))}</p>
+                  <p class="event__duration">${getDurationFormat(dateFrom, dateTo)}</p>
                 </div>
                 <p class="event__price">
                   &euro;&nbsp;<span class="event__price-value">${price}</span>

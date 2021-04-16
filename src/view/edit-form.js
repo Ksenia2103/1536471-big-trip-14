@@ -3,9 +3,10 @@ import {getDateFormat} from '../utils.js';
 const createOffersListTemplate = (offers) => {
   if (offers.length === 0) {
     return '';
-  } else {
-    return offers.map((offer,index) =>
-      `<div class="event__offer-selector">
+  }
+
+  return offers.map((offer, index) =>
+    `<div class="event__offer-selector">
       <input class="event__offer-checkbox  visually-hidden" id="event-offer-name-${index + 1}" type="checkbox" name="event-offer-name">
       <label class="event__offer-label" for="event-offer-name-${index + 1}">
         <span class="event__offer-title">${offer.title}</span>
@@ -13,8 +14,7 @@ const createOffersListTemplate = (offers) => {
         <span class="event__offer-price">${offer.price}</span>
       </label>
     </div>`,
-    ).join('');
-  }
+  ).join('');
 };
 
 export const createEditFormTemplate = (point = {}) => {
