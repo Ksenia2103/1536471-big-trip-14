@@ -1,6 +1,6 @@
-import {getDateFormat} from '../utils.js';
+import {getDateFormat, createElement} from '../utils.js';
 
-export const createTripInfoTemplate = (points) => {
+const createTripInfoTemplate = (points) => {
   const tripData = {
     route: '',
     range: '',
@@ -38,3 +38,26 @@ export const createTripInfoTemplate = (points) => {
             </div>
           </section>`;
 };
+
+export default class TripInfo {
+  constructor(points) {
+    this._element = null;
+    this._points = points;
+  }
+
+  getTemplate() {
+    return createTripInfoTemplate(this._points);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
