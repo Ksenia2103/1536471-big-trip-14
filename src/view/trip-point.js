@@ -1,6 +1,6 @@
-import {getDateFormat, getDurationFormat} from '../utils.js';
+import {getDateFormat, getDurationFormat, createElement} from '../utils.js';
 
-export const createTripPointTemplate = (point = {}) => {
+const createTripPointTemplate = (point = {}) => {
   const {
     type,
     destination = {},
@@ -55,3 +55,26 @@ export const createTripPointTemplate = (point = {}) => {
               </div>
             </li>`;
 };
+
+export default class TripPoint {
+  constructor(point) {
+    this._element = null;
+    this._point = point;
+  }
+
+  getTemplate() {
+    return createTripPointTemplate(this._point);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

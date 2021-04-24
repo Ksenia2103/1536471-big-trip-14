@@ -1,4 +1,4 @@
-import {getDateFormat} from '../utils.js';
+import {getDateFormat, createElement} from '../utils.js';
 
 const createOffersListTemplate = (offers) => {
   if (offers.length === 0) {
@@ -23,7 +23,7 @@ const createPictureListTemplate = (pictures) => {
   ).join('');
 };
 
-export const createAddFormTemplate = (point = {}) => {
+const createAddFormTemplate = (point = {}) => {
   const {
     id,
     type,
@@ -158,3 +158,26 @@ export const createAddFormTemplate = (point = {}) => {
               </form>
             </li>`;
 };
+
+export default class AddForm {
+  constructor(point) {
+    this._element = null;
+    this._point = point;
+  }
+
+  getTemplate() {
+    return createAddFormTemplate(this._point);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
