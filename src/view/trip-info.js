@@ -1,4 +1,5 @@
-import {getDateFormat, createElement} from '../utils.js';
+import {getDateFormat} from '../utils/date.js';
+import AbstractView from './abstract.js';
 
 const createTripInfoTemplate = (points) => {
   const tripData = {
@@ -39,25 +40,13 @@ const createTripInfoTemplate = (points) => {
           </section>`;
 };
 
-export default class TripInfo {
+export default class TripInfo extends AbstractView {
   constructor(points) {
-    this._element = null;
+    super();
     this._points = points;
   }
 
   getTemplate() {
     return createTripInfoTemplate(this._points);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

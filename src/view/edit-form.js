@@ -1,4 +1,5 @@
-import {getDateFormat, createElement} from '../utils.js';
+import {getDateFormat} from '../utils/date.js';
+import AbstractView from './abstract.js';
 
 const createOffersListTemplate = (offers) => {
   if (offers.length === 0) {
@@ -149,25 +150,35 @@ const createEditFormTemplate = (point = {}) => {
             </li>`;
 };
 
-export default class EditForm {
+export default class EditForm extends AbstractView {
   constructor(point) {
-    this._element = null;
+    super();
     this._point = point;
+    this._editClickHandler = this._editClickHandler.bind(this);
+    this._formSubmitHandler = this._formSubmitHandler.bind(this);
   }
 
   getTemplate() {
     return createEditFormTemplate(this._point);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
+  _formSubmitHandler(evt) {
+    evt.preventDefault();
+    this._callback.formSubmit();
   }
 
-  removeElement() {
-    this._element = null;
+  setFormSubmitHandler(callback) {
+    this._callback.formSubmit = callback;
+    this.getElement().querySelector('form').addEventListener('submit', this._formSubmitHandler);
+  }
+
+  _editClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.editClick();
+  }
+
+  setEditClickHandler(callback) {
+    this._callback.editClick = callback;
+    this.getElement().querySelector('.event__rollup-btn').addEventListener('click', this._editClickHandler);
   }
 }

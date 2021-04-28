@@ -1,4 +1,5 @@
-import {getDateFormat, createElement} from '../utils.js';
+import {getDateFormat} from '../utils/date.js';
+import AbstractView from './abstract.js';
 
 const createOffersListTemplate = (offers) => {
   if (offers.length === 0) {
@@ -159,25 +160,13 @@ const createAddFormTemplate = (point = {}) => {
             </li>`;
 };
 
-export default class AddForm {
+export default class AddForm extends AbstractView {
   constructor(point) {
-    this._element = null;
+    super();
     this._point = point;
   }
 
   getTemplate() {
     return createAddFormTemplate(this._point);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
