@@ -1,4 +1,5 @@
-import {getRandomInteger, getRandomElement, getDateFrom, getDateTo} from '../utils.js';
+import {getDateFrom, getDateTo} from '../utils/date.js';
+import {getRandomInteger, getRandomElement} from '../utils/common.js';
 import {TRIP_POINT_TYPES} from './constants.js';
 
 let idPoint = 0;
