@@ -26,20 +26,12 @@ export default class Trip {
 
   _renderTrip () {
     if (this._tripPoints.length === 0) {
-      this._renderEmptyListPoints();
+      render(this._tripContainer, this._emptyListComponent, RenderPosition.BEFOREEND);
       return;
     }
 
-    this._renderSort();
-    this._renderPointsList();
-  }
-
-  _renderEmptyListPoints() {
-    render(this._tripContainer, this._emptyListComponent, RenderPosition.BEFOREEND);
-  }
-
-  _renderSort () {
     render(this._tripContainer, this._sortingComponent, RenderPosition.BEFOREEND);
+    this._renderPointsList();
   }
 
   _renderPointsList () {
