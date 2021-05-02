@@ -1,8 +1,8 @@
+import {nanoid} from 'nanoid';
 import {getDateFrom, getDateTo} from '../utils/date.js';
 import {getRandomInteger, getRandomElement} from '../utils/common.js';
 import {TRIP_POINT_TYPES} from './constants.js';
 
-let idPoint = 0;
 
 const CITIES = ['Amsterdam', 'Chamonix', 'Geneva', 'Madrid' , 'Berlin', 'Milan', 'Rome', 'Vienna', 'Paris'];
 const DESCRIPTIONS  = [
@@ -65,7 +65,7 @@ const generateTripPoint = () => {
   const dateFrom = getDateFrom();
 
   return {
-    id: idPoint++,
+    id: nanoid(),
     type: getRandomElement(TRIP_POINT_TYPES),
     destination: {
       name: getRandomElement(CITIES),
