@@ -65,10 +65,15 @@ const getDurationFormat = (dateFrom, dateTo) => {
   return `${minutesValue}M`;
 };
 
+const getDuration = (dateFrom, dateTo) => {
+  return dayjs(dateTo).diff(dayjs(dateFrom));
+};
+
 export {
   getDateFrom,
   getDateTo,
   getDateFormat,
   getDurationFormat,
-  separateTimeDuration
+  separateTimeDuration,
+  getDuration
 };
