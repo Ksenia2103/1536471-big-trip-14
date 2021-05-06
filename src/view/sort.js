@@ -47,9 +47,7 @@ export default class Sort extends AbstractView {
       return;
     }
 
-    const sortType = evt.target.value;
-
-    this._callback.sortTypeChange(sortType);
+    this._callback.sortTypeChange(evt.target.value);
   }
 
   setSortTypeChangeHandler(callback) {
