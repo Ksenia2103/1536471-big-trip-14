@@ -3,7 +3,7 @@ import Abstract from './abstract.js';
 export default class Smart extends Abstract {
   constructor() {
     super();
-    this._state = {};
+    this._data = {};
   }
 
   updateState(update, justStateUpdating) {
@@ -11,9 +11,9 @@ export default class Smart extends Abstract {
       return;
     }
 
-    this._state = Object.assign(
+    this._data = Object.assign(
       {},
-      this._state,
+      this._data,
       update,
     );
 

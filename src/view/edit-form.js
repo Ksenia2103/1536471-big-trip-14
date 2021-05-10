@@ -216,7 +216,7 @@ export default class EditForm extends SmartView {
     this.updateState({
       type: newType,
       offers: offersByType,
-      hasOffers: offersByType.length > 0 ? true : false,
+      hasOffers: offersByType.length > 0,
     });
   }
 

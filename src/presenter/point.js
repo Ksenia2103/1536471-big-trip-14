@@ -30,8 +30,8 @@ export default class Point {
     const prevPointComponent = this._pointComponent;
     const prevEditPointComponent = this._pointEditComponent;
 
-    this._pointComponent = new TripPointView(this._point);//(point);
-    this._pointEditComponent = new EditFormView(this._point);//(point);
+    this._pointComponent = new TripPointView(this._point);
+    this._pointEditComponent = new EditFormView(this._point);
 
     this._pointComponent.setClickHandler(this._handleEditClick);
     this._pointEditComponent.setFormSubmitHandler(this._handleFormSubmit);
