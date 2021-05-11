@@ -2,8 +2,8 @@ import SortView from '../view/sort.js';
 import TripEventsListView from '../view/trip-events-list.js';
 import EmptyEventListView from '../view/empty-event-list.js';
 import PointPresenter from './point.js';
-import {render, RenderPosition} from '../utils/render';
-import {updateItem} from '../utils/common';
+import {render, RenderPosition} from '../utils/render.js';
+import {updateItem} from '../utils/common.js';
 import {SORT_TYPE} from '../constants.js';
 import {sortByDate, sortByDuration, sortByPrice} from '../utils/sort';
 
@@ -83,6 +83,7 @@ export default class Trip {
 
   _handlePointChange(updatedPoint) {
     this._tripPoints = updateItem(this._tripPoints, updatedPoint);
+    this._sourcePoints = updateItem(this._tripPoints, updatedPoint);
     this._pointPresenter[updatedPoint.id].init(updatedPoint);
   }
 

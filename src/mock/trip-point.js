@@ -4,8 +4,8 @@ import {getRandomInteger, getRandomElement} from '../utils/common.js';
 import {TRIP_POINT_TYPES} from './constants.js';
 
 
-const CITIES = ['Amsterdam', 'Chamonix', 'Geneva', 'Madrid' , 'Berlin', 'Milan', 'Rome', 'Vienna', 'Paris'];
-const DESCRIPTIONS  = [
+const CITIES = ['Amsterdam', 'Chamonix', 'Geneva', 'Madrid', 'Berlin', 'Milan', 'Rome', 'Vienna', 'Paris'];
+const DESCRIPTIONS = [
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
   'Cras aliquet varius magna, non porta ligula feugiat eget.',
   'Fusce tristique felis at fermentum pharetra.',
@@ -61,6 +61,20 @@ const generateOffers = () => {
   return offersList;
 };
 
+const generateDestinations = () => {
+  const destinations = [];
+
+  CITIES.forEach((destinationName) => {
+    destinations.push({
+      name: destinationName,
+      description: generateDescription(),
+      pictures: generatePictures(),
+    });
+  });
+
+  return destinations;
+};
+
 const generateTripPoint = () => {
   const dateFrom = getDateFrom();
 
@@ -80,4 +94,4 @@ const generateTripPoint = () => {
   };
 };
 
-export {generateTripPoint};
+export {generateTripPoint, generateDestinations, generateOffers, CITIES};
