@@ -239,13 +239,13 @@ export default class EditForm extends SmartView {
 
   _dateFromChangeHandler([userDate]) {
     this.updateState({
-      date_from: userDate,
+      dateFrom: userDate,
     });
   }
 
   _dateToChangeHandler([userDate]) {
     this.updateState({
-      date_to: userDate,
+      dateTo: userDate,
     });
   }
 
