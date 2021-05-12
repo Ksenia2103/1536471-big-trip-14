@@ -22,6 +22,8 @@ const createTripPointTemplate = (point = {}) => {
       </li>`).join('');
   };
 
+  const duration = getDurationFormat(dateFrom, dateTo);
+
   return `<li class="trip-events__item">
               <div class="event">
                 <time class="event__date" datetime="${getDateFormat(dateFrom)}">${getDateFormat(dateFrom, 'MMM D')}</time>
@@ -35,7 +37,7 @@ const createTripPointTemplate = (point = {}) => {
                     &mdash;
                     <time class="event__end-time" datetime="${getDateFormat(dateTo, 'YYYY-MM-DDTHH:mm')}">${getDateFormat(dateTo, 'HH:mm')}</time>
                   </p>
-                  <p class="event__duration">${getDurationFormat(dateFrom, dateTo)}</p>
+                  <p class="event__duration">${duration}</p>
                 </div>
                 <p class="event__price">
                   &euro;&nbsp;<span class="event__price-value">${price}</span>

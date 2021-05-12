@@ -49,13 +49,14 @@ const getDurationFormat = (dateFrom, dateTo) => {
   }
 
   const duration = dayjs(dateTo).diff(dayjs(dateFrom));
+
   const days = dayjs.duration(duration).days();
   const hours = dayjs.duration(duration).hours();
   const minutes = dayjs.duration(duration).minutes();
 
-  const daysValue = String(minutes).padStart(2, '0');
+  const daysValue = String(days).padStart(2, '0');
   const hoursValue = String(hours).padStart(2, '0');
-  const minutesValue = String(days).padStart(2, '0');
+  const minutesValue = String(minutes).padStart(2, '0');
 
   if (days > 0) {
     return `${daysValue}D ${hoursValue}H ${minutesValue}M`;
