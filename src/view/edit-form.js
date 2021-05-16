@@ -5,6 +5,7 @@ import flatpickr from 'flatpickr';
 import '../../node_modules/flatpickr/dist/flatpickr.min.css';
 import {CITIES} from '../mock/trip-point.js';
 import {TRIP_POINT_TYPES} from '../mock/constants.js';
+import {MODE, BLANK_POINT} from '../constants';
 
 const createDestinationListTemplate = (cities) => {
   return `<datalist id="destination-list-1">
@@ -26,16 +27,17 @@ const createOffersListTemplate = (offers, hasOffers) => {
     return '';
   }
 
-  return offers.map((offer, index) =>
-    `<div class="event__offer-selector">
+  return offers.map((offer, index) => {
+
+    return `<div class="event__offer-selector">
       <input class="event__offer-checkbox  visually-hidden" id="event-offer-name-${index + 1}" type="checkbox" name="event-offer-name">
       <label class="event__offer-label" for="event-offer-name-${index + 1}">
         <span class="event__offer-title">${offer.title}</span>
         &plus;&euro;&nbsp;
         <span class="event__offer-price">${offer.price}</span>
       </label>
-    </div>`,
-  ).join('');
+    </div>`;
+  }).join('');
 };
 
 const createOffersTemplate = (offers, hasOffers) => {
@@ -73,7 +75,13 @@ const createDescriptionTemplate = (description, pictures, hasDescription, hasIma
                   </section>`;
 };
 
-const createEditFormTemplate = (point = {}) => {
+const createOpenEventTemplate = (mode) => {
+  return mode === MODE.EDIT ? `<button class="event__rollup-btn" type="button">
+                                <span class="visually-hidden">Open event</span>
+                               </button>` : '';
+};
+
+const createEditFormTemplate = (point = BLANK_POINT, mode = MODE.EDIT) => {
   const {
     type,
     destination = {},
@@ -127,14 +135,12 @@ const createEditFormTemplate = (point = {}) => {
                       <span class="visually-hidden">Price</span>
                       &euro;
                     </label>
-                    <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${price}">
+                    <input class="event__input  event__input--price" id="event-price-1" type="number" name="event-price" value="${price}">
                   </div>
 
                   <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-                  <button class="event__reset-btn" type="reset">Delete</button>
-                  <button class="event__rollup-btn" type="button">
-                    <span class="visually-hidden">Open event</span>
-                  </button>
+                  <button class="event__reset-btn" type="reset">${mode === MODE.ADD ? 'Cancel' : 'Delete'}</button>
+                  ${createOpenEventTemplate(mode)}
                 </header>
                 <section class="event__details">
                 ${createOffersTemplate(offers, hasOffers)}
@@ -145,20 +151,23 @@ const createEditFormTemplate = (point = {}) => {
 };
 
 export default class EditForm extends SmartView {
-  constructor(point) {
+  constructor(point = BLANK_POINT, mode = MODE.EDIT) {
     super();
     this._data = EditForm.parsePointToState(point);
     this._fromDatePicker = null;
     this._toDatePicker = null;
+    this._mode = mode;
 
     this._destinations = generateDestinations();
 
     this._editClickHandler = this._editClickHandler.bind(this);
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
+    this._formDeleteClickHandler = this._formDeleteClickHandler.bind(this);
     this._typeToggleHandler = this._typeToggleHandler.bind(this);
     this._destinationToggleHandler = this._destinationToggleHandler.bind(this);
     this._dateFromChangeHandler = this._dateFromChangeHandler.bind(this);
     this._dateToChangeHandler = this._dateToChangeHandler.bind(this);
+    this._priceChangeHandler = this._priceChangeHandler.bind(this);
 
     this._setInnerHandlers();
     this._setDatepickerFrom();
@@ -166,7 +175,7 @@ export default class EditForm extends SmartView {
   }
 
   getTemplate() {
-    return createEditFormTemplate(this._data);
+    return createEditFormTemplate(this._data, this._mode);
   }
 
   reset(point) {
@@ -178,12 +187,14 @@ export default class EditForm extends SmartView {
   _setInnerHandlers() {
     this.getElement().querySelector('.event__type-list').addEventListener('change', this._typeToggleHandler);
     this.getElement().querySelector('.event__input--destination').addEventListener('change', this._destinationToggleHandler);
+    this.getElement().querySelector('.event__input--price').addEventListener('change', this._priceChangeHandler);
   }
 
   restoreHandlers() {
     this._setInnerHandlers();
     this.setFormSubmitHandler(this._callback.formSubmit);
     this.setEditClickHandler(this._callback.editClick);
+    this.setDeleteClickHandler(this._callback.deleteClick);
     this._setDatepickerFrom();
     this._setDatepickerTo();
   }
@@ -206,6 +217,16 @@ export default class EditForm extends SmartView {
   setEditClickHandler(callback) {
     this._callback.editClick = callback;
     this.getElement().querySelector('.event__rollup-btn').addEventListener('click', this._editClickHandler);
+  }
+
+  _formDeleteClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.deleteClick(EditForm.parseStateToPoint(this._data));
+  }
+
+  setDeleteClickHandler(callback) {
+    this._callback.deleteClick = callback;
+    this.getElement().querySelector('.event__reset-btn').addEventListener('click', this._formDeleteClickHandler);
   }
 
   _typeToggleHandler(evt) {
@@ -261,6 +282,7 @@ export default class EditForm extends SmartView {
         {
           enableTime: true,
           dateFormat: 'd/m/y h:i',
+          time_24hr: true,
           defaultDate: this._data.dateFrom,
           onChange: this._dateFromChangeHandler,
         },
@@ -280,11 +302,20 @@ export default class EditForm extends SmartView {
         {
           enableTime: true,
           dateFormat: 'd/m/y h:i',
+          time_24hr: true,
           defaultDate: this._data.dateTo,
           onChange: this._dateToChangeHandler,
         },
       );
     }
+  }
+
+  _priceChangeHandler(evt) {
+    evt.preventDefault();
+
+    this.updateState({
+      price: evt.target.value,
+    }, true);
   }
 
   static parsePointToState(point) {
