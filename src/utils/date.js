@@ -67,7 +67,19 @@ const getDurationFormat = (dateFrom, dateTo) => {
 };
 
 const getDuration = (dateFrom, dateTo) => {
-  return dayjs(dateTo).diff(dayjs(dateFrom));
+  return dayjs(dateTo) - dayjs(dateFrom);
+};
+
+const isPastDate = (point) => {
+  return dayjs(point.dateTo).isBefore(dayjs());
+};
+
+const isFutureDate = (point) => {
+  return dayjs(point.dateFrom).isAfter(dayjs()) || dayjs(point.dateFrom).isSame(dayjs());
+};
+
+const isDateEqual = (dateA, dateB) => {
+  return dayjs(dateA).isSame(dateB);
 };
 
 export {
@@ -76,5 +88,8 @@ export {
   getDateFormat,
   getDurationFormat,
   separateTimeDuration,
-  getDuration
+  getDuration,
+  isPastDate,
+  isFutureDate,
+  isDateEqual
 };

@@ -1,6 +1,8 @@
 import EditFormView from '../view/edit-form.js';
 import TripPointView from '../view/trip-point.js';
 import {remove, render, RenderPosition, replace} from '../utils/render';
+import {UPDATE_TYPE, USER_ACTION} from '../constants';
+import {isDateEqual} from '../utils/date';
 
 const Mode = {
   DEFAULT: 'DEFAULT',
@@ -22,6 +24,7 @@ export default class Point {
     this._handleFavouriteClick = this._handleFavouriteClick.bind(this);
     this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
     this._handleCloseClick = this._handleCloseClick.bind(this);
+    this._handleDeleteClick = this._handleDeleteClick.bind(this);
   }
 
   init(point) {
@@ -37,6 +40,7 @@ export default class Point {
     this._pointEditComponent.setFormSubmitHandler(this._handleFormSubmit);
     this._pointComponent.setFavouriteClickHandler(this._handleFavouriteClick);
     this._pointEditComponent.setEditClickHandler(this._handleCloseClick);
+    this._pointEditComponent.setDeleteClickHandler(this._handleDeleteClick);
 
     if (prevPointComponent === null || prevEditPointComponent === null) {
       render(this._pointsListContainer, this._pointComponent, RenderPosition.BEFOREEND);
@@ -90,13 +94,21 @@ export default class Point {
     this._replacePointByForm();
   }
 
-  _handleFormSubmit(evt) {
-    this._changeData(evt);
+  _handleFormSubmit(update) {
+    const isMinorUpdate = !isDateEqual(this._point.dateFrom, update.dateFrom);
+
+    this._changeData(
+      USER_ACTION.UPDATE_POINT,
+      isMinorUpdate ? UPDATE_TYPE.MINOR : UPDATE_TYPE.PATCH,
+      update,
+    );
     this._replaceFormByPoint();
   }
 
   _handleFavouriteClick() {
     this._changeData(
+      USER_ACTION.UPDATE_POINT,
+      UPDATE_TYPE.MINOR,
       Object.assign(
         {},
         this._point,
@@ -110,5 +122,13 @@ export default class Point {
   _handleCloseClick() {
     this._pointEditComponent.reset(this._point);
     this._replaceFormByPoint();
+  }
+
+  _handleDeleteClick(point) {
+    this._changeData(
+      USER_ACTION.DELETE_POINT,
+      UPDATE_TYPE.MINOR,
+      point,
+    );
   }
 }

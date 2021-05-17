@@ -1,6 +1,19 @@
 import {getDateFormat, getDurationFormat} from '../utils/date.js';
 import AbstractView from './abstract.js';
 
+const createOfferListTemplate = (offers) => {
+  if (offers.length === 0) {
+    return '';
+  }
+
+  return offers.map((offer) =>
+    `<li class="event__offer">
+        <span class="event__offer-title">${offer.title}</span>
+        &plus;&euro;&nbsp;
+        <span class="event__offer-price">${offer.price}</span>
+      </li>`).join('');
+};
+
 const createTripPointTemplate = (point = {}) => {
   const {
     type,
@@ -11,16 +24,6 @@ const createTripPointTemplate = (point = {}) => {
     offers = [],
     isFavorite,
   } = point;
-
-  const createOfferListTemplate = (offers) => {
-
-    return offers.map((offer) =>
-      `<li class="event__offer">
-        <span class="event__offer-title">${offer.title}</span>
-        &plus;&euro;&nbsp;
-        <span class="event__offer-price">${offer.price}</span>
-      </li>`).join('');
-  };
 
   const duration = getDurationFormat(dateFrom, dateTo);
 
