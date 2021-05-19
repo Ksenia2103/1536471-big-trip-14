@@ -45,4 +45,44 @@ const BLANK_POINT = {
   isFavourite: false,
 };
 
-export {SORT_TYPE, USER_ACTION, UPDATE_TYPE, FILTER_TYPE, MODE, BLANK_POINT};
+const STATISTICS_SETTINGS = {
+  type: 'horizontalBar',
+  backgroundColor: '#ffffff',
+  hoverBackgroundColor: '#ffffff',
+  dataAnchor: 'start',
+  fontSize: 13,
+  datalabelsColor: '#000000',
+  fontColor: '#000000',
+  datalabelsAnchor: 'end',
+  datalabelsAlign: 'start',
+  titleFontSize: 23,
+  titlePosition: 'left',
+  padding: 5,
+  minBarLength: 100,
+  barHeight: 55,
+  barThickness: 44,
+
+};
+
+const STATISTICS_TITLES = {
+  TYPE: 'TYPE',
+  MONEY: 'MONEY',
+  TIME_SPENT: 'TIME-SPENT',
+};
+
+const MENU_ITEM = {
+  TABLE: 'TABLE',
+  STATS: 'STATS',
+};
+
+export {
+  SORT_TYPE,
+  USER_ACTION,
+  UPDATE_TYPE,
+  FILTER_TYPE,
+  MODE,
+  BLANK_POINT,
+  STATISTICS_SETTINGS,
+  STATISTICS_TITLES,
+  MENU_ITEM
+};
